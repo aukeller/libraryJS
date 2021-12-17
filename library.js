@@ -51,9 +51,30 @@ function createBookCard(book) {
 
 let newBookBtn = document.querySelector('#new-book');
 let newBookForm = document.querySelector('form');
+let addBookBtn = document.querySelector("#add-book");
 
 function displayForm() {
-    newBookForm.removeAttribute('hidden');
+    newBookForm.hidden = false;
+}
+
+function hideForm() {
+    newBookForm.hidden = true;
+}
+
+function addBookFromForm() {
+    const title = newBookForm.elements.item(0).value;
+    const author = newBookForm.elements.item(1).value;
+    const pages = parseInt(newBookForm.elements.item(2).value);
+    let read; 
+    
+    newBookForm.elements.item(3).value == 'on' ? read = true: read = false;
+
+    const book = new Book(title, author, pages, read);
+    
+    addBookToLibrary(book);
+    hideForm();
+    
 }
 
 newBookBtn.addEventListener('click', displayForm);
+addBookBtn.addEventListener('click', addBookFromForm);
