@@ -48,3 +48,12 @@ function createBookCard(book) {
 
     return container;
 }
+
+let newBookBtn = document.querySelector('#new-book');
+let newBookForm = document.querySelector('form');
+
+function displayForm() {
+    newBookForm.removeAttribute('hidden');
+}
+
+newBookBtn.addEventListener('click', displayForm);
