@@ -16,6 +16,14 @@ function Book(title, author, pages, read) {
     }
 }
 
+Book.prototype.toggleReadStatus = function() {
+    if (this.read) {
+        this.read = false;
+    } else {
+        this.read = true;
+    }
+}
+
 displayBooks();
 
 
@@ -25,28 +33,29 @@ function addBookToLibrary(book) {
 
 function displayBooks() {
     let booksContainer = document.querySelector('.books');
-    
+    let removeBookBtns;
+    let haveReadBtns;
 
-
-   while (booksContainer.firstChild) {
-       booksContainer.removeChild(booksContainer.firstChild);
-   }
-
-    for (let i = 0; i < myLibrary.length; i++) {
-        let newBook = createBookCard(myLibrary[i], i)
-        
-        let removeBtn = document.createElement('button');
-        removeBtn.setAttribute('id', 'remove-book');
-        removeBtn.textContent = "Remove book";
-
-        newBook.appendChild(removeBtn);
-
-        booksContainer.appendChild(newBook);
+    while (booksContainer.firstChild) {
+        booksContainer.removeChild(booksContainer.firstChild);
     }
 
-    let removeBookBtns = document.querySelectorAll('#remove-book');
-    removeBookBtns.forEach(btn => btn.addEventListener('click', removeBook));
+    for (let i = 0; i < myLibrary.length; i++) {
+        booksContainer.appendChild(createBookCard(myLibrary[i], i));
+    }
 
+    removeBookBtns = document.querySelectorAll('.remove-book');
+    haveReadBtns = document.querySelectorAll('.have-read');
+
+    removeBookBtns.forEach(btn => btn.addEventListener('click', removeBook));
+    haveReadBtns.forEach(btn => btn.addEventListener('click', function(e) {
+        let bookId = parseInt(e.target.parentNode.id);
+        myLibrary[bookId].toggleReadStatus();
+
+        displayBooks()
+    }));
+
+    
 }
 
 function createBookCard(book, index) {
@@ -56,16 +65,27 @@ function createBookCard(book, index) {
     let title = document.createElement('h3');
     let author = document.createElement('p');
     let pages = document.createElement('p');
-    let read = document.createElement('p');
-
     
+
+    let removeBtn = document.createElement('button');
+    removeBtn.setAttribute('class', 'remove-book');
+    removeBtn.textContent = "Remove book";
+
+    let haveReadBtn = document.createElement('button');
+    haveReadBtn.setAttribute('class', 'have-read');
+
+    if (book.read) {
+        haveReadBtn.textContent = "Have read";
+    } else {
+        haveReadBtn.textContent = "Have not read";
+    }
 
     title.textContent = book.title;
     author.textContent = book.author;
     pages.textContent = `Pages: ${book.pages}`;
-    read.textContent = `Read: ${book.read}`;
+    
 
-    container.append(title, author, pages, read);
+    container.append(title, author, pages, removeBtn, haveReadBtn);
 
     return container;
 }
@@ -74,6 +94,7 @@ function createBookCard(book, index) {
 let newBookBtn = document.querySelector('#new-book');
 let newBookForm = document.querySelector('form');
 let addBookBtn = document.querySelector("#add-book");
+
 
 
 function displayForm() {
@@ -93,7 +114,7 @@ function addBookFromForm() {
     const pages = parseInt(newBookForm.elements.item(2).value);
     let read; 
     
-    newBookForm.elements.item(3).value == 'on' ? read = true: read = false;
+    newBookForm.elements.item(3).checked == 'on' ? read = true: read = false;
 
     const book = new Book(title, author, pages, read);
     
