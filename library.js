@@ -61,6 +61,7 @@ function displayBooks() {
 function createBookCard(book, index) {
     let container = document.createElement('div');
     container.setAttribute('id', `${index}`);
+    container.classList.add('book');
 
     let title = document.createElement('h3');
     let author = document.createElement('p');
