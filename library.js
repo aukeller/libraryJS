@@ -1,20 +1,21 @@
-let myLibrary = [new Book('The Hobbit', "J.R.R Tolkien", 255, true), 
-new Book('Harry Potter', "J.K. Rowling", 500, false)];
-
-
-function Book(title, author, pages, read) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = read;
-    this.info = function() {
-        if (read == true) {
-            return `${title} by ${author}, ${pages} pages, has been read`;
+class Book {
+    constructor(title, author, pages, read) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.read = read;
+    }
+    get info() {
+        if (this.read == true) {
+            return `${this.title} by ${this.author}, ${this.pages} pages, has been read`;
         } else {
-            return `${title} by ${author}, ${pages} pages, not read yet`;
+            return `${this.title} by ${this.author}, ${this.pages} pages, not read yet`;
         }
     }
 }
+
+let myLibrary = [new Book('The Hobbit', "J.R.R Tolkien", 255, true), 
+new Book('Harry Potter', "J.K. Rowling", 500, false)];
 
 Book.prototype.toggleReadStatus = function() {
     if (this.read) {
