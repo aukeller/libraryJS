@@ -111,18 +111,22 @@ function hideForm() {
 }
 
 function addBookFromForm() {
-    const title = newBookForm.elements.item(0).value;
-    const author = newBookForm.elements.item(1).value;
-    const pages = parseInt(newBookForm.elements.item(2).value);
-    let read; 
-    
-    newBookForm.elements.item(3).checked == 'on' ? read = true: read = false;
+    const form = document.querySelector('form');
 
-    const book = new Book(title, author, pages, read);
-    
-    addBookToLibrary(book);
-    hideForm();
-    displayBooks();
+    if (form.checkValidity()) {
+        const title = newBookForm.elements.item(0).value;
+        const author = newBookForm.elements.item(1).value;
+        const pages = parseInt(newBookForm.elements.item(2).value);
+        let read; 
+        
+        newBookForm.elements.item(3).checked == 'on' ? read = true: read = false;
+
+        const book = new Book(title, author, pages, read);
+        
+        addBookToLibrary(book);
+        hideForm();
+        displayBooks();
+    }
     
 }
 
@@ -139,4 +143,5 @@ function removeBook(e) {
 
 newBookBtn.addEventListener('click', displayForm);
 addBookBtn.addEventListener('click', addBookFromForm);
+
 
